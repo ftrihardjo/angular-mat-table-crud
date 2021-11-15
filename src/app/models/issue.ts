@@ -1,8 +1,8 @@
 export class Issue {
   id: number;
-  title: string;
-  state: string;
-  url: string;
-  created_at: string;
-  updated_at: string;
+  name: string;
+  birthDate: Date;
+  gender: string;
+  address: string;
+  phoneNo: string;
 }

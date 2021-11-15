@@ -19,7 +19,7 @@ import {map} from 'rxjs/operators';
 })
 
 export class AppComponent implements OnInit {
-  displayedColumns = ['id', 'title', 'state', 'url', 'created_at', 'updated_at', 'actions'];
+  displayedColumns = ['PID', 'name', 'date_of_birth', 'gender', 'address', 'phone_no', 'actions'];
   exampleDatabase: DataService | null;
   dataSource: ExampleDataSource | null;
   index: number;
@@ -56,13 +56,13 @@ export class AppComponent implements OnInit {
     });
   }
 
-  startEdit(i: number, id: number, title: string, state: string, url: string, created_at: string, updated_at: string) {
+  startEdit(i: number, id: number, name: string, birthDate: Date, gender: string, address: string, phoneNo: string) {
     this.id = id;
     // index row is used just for debugging proposes and can be removed
     this.index = i;
     console.log(this.index);
     const dialogRef = this.dialog.open(EditDialogComponent, {
-      data: {id: id, title: title, state: state, url: url, created_at: created_at, updated_at: updated_at}
+      data: {id: id, name: name, birthDate: birthDate, gender: gender, address: address, phoneNo: phoneNo}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -77,11 +77,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  deleteItem(i: number, id: number, title: string, state: string, url: string) {
+  deleteItem(i: number, id: number, name: string, address: string, phoneNo: string) {
     this.index = i;
     this.id = id;
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: {id: id, title: title, state: state, url: url}
+      data: {id: id, name: name, address: address, phoneNo: phoneNo}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -174,7 +174,7 @@ export class ExampleDataSource extends DataSource<Issue> {
     return merge(...displayDataChanges).pipe(map( () => {
         // Filter data
         this.filteredData = this._exampleDatabase.data.slice().filter((issue: Issue) => {
-          const searchStr = (issue.id + issue.title + issue.url + issue.created_at).toLowerCase();
+          const searchStr = (issue.id + issue.name + issue.address + issue.phoneNo).toLowerCase();
           return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
         });
 
@@ -199,16 +199,16 @@ export class ExampleDataSource extends DataSource<Issue> {
     }
 
     return data.sort((a, b) => {
-      let propertyA: number | string = '';
-      let propertyB: number | string = '';
+      let propertyA: number | Date | string = '';
+      let propertyB: number | Date | string = '';
 
       switch (this._sort.active) {
         case 'id': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'title': [propertyA, propertyB] = [a.title, b.title]; break;
-        case 'state': [propertyA, propertyB] = [a.state, b.state]; break;
-        case 'url': [propertyA, propertyB] = [a.url, b.url]; break;
-        case 'created_at': [propertyA, propertyB] = [a.created_at, b.created_at]; break;
-        case 'updated_at': [propertyA, propertyB] = [a.updated_at, b.updated_at]; break;
+        case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
+        case 'date_of_birth': [propertyA, propertyB] = [a.birthDate, b.birthDate]; break;
+        case 'gender': [propertyA, propertyB] = [a.gender, b.gender]; break;
+        case 'address': [propertyA, propertyB] = [a.address, b.address]; break;
+        case 'phoneNo': [propertyA, propertyB] = [a.phoneNo, b.phoneNo]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
